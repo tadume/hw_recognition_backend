@@ -3,10 +3,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 import json
 
+from api.tensorflow import image_preprocessing
 @csrf_exempt
 def predict(request):
-    if request.body:
-        body = json.loads(request.body)
-        print(body)
+    body = json.loads(request.body)
+    base64image = body["image"].split(",")[1]
+    numpy_image = image_preprocessing.base64_to_numpy(base64image)
 
     return HttpResponse(status=200)
